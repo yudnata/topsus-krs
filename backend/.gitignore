@@ -1,0 +1,26 @@
+# Environment variables
+.env
+.env.local
+.env.*
+
+# Compiled binaries
+main
+main.exe
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+api-binary
+
+# Test coverage
+*.out
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.suo
+*.ntvsca*
+*.njsproj
+*.sln
+*.swp

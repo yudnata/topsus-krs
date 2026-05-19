@@ -1,0 +1,31 @@
+# Environment (jangan upload ke GitHub — laporan §2.23)
+.env
+.env.local
+backend/.env
+frontend/.env
+
+# Dependencies & build
+node_modules/
+frontend/dist/
+backend/main
+backend/main.exe
+api-binary
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Documentation & AI Agent logs (tidak diperlukan untuk deploy/produksi)
+ARSITEKTUR.md
+CHECKPOINT.md
+CONTEXT.md
+DEPLOY.md
+GITHUB.md
+PROMPT_LOG.md
+laporan_bab2_part1.md
+laporan_bab2_part2.md
+laporan_bab2_part3.md
+struktur-laporan-dipakai.md

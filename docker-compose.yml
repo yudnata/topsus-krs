@@ -1,0 +1,39 @@
+# PostgreSQL + Redis untuk development lokal Sistem KRS
+# Usage: cp .env.example .env && docker compose up -d
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: krs-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-krs}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-krs_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-krs_db}
+    ports:
+      - "${POSTGRES_PORT:-5434}:5432"
+    volumes:
+      - krs_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-krs} -d ${POSTGRES_DB:-krs_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: krs-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - krs_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  krs_pg_data:
+  krs_redis_data:
