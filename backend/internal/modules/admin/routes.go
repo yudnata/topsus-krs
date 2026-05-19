@@ -24,7 +24,6 @@ func RegisterRoutes(api fiber.Router, h *Handler, authSvc *auth.Service) {
 	admin.Get("/kelas", auth.RequireRole("ADMIN", "MAHASISWA"), h.ListKelas)
 	admin.Post("/kelas", auth.RequireRole("ADMIN"), h.CreateKelas)
 
-	// Dosen
 	admin.Get("/dosen", auth.RequireRole("ADMIN"), h.ListDosen)
 	admin.Get("/dosen/:id", auth.RequireRole("ADMIN"), h.GetDosen)
 	admin.Post("/dosen", auth.RequireRole("ADMIN"), h.CreateDosen)
