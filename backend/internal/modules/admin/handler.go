@@ -14,7 +14,7 @@ func NewHandler(svc *Service) *Handler {
 	return &Handler{svc: svc}
 }
 
-// ─── Program Studi ───────────────────────────────────────────────────────────
+// ─── Program Studi ────────────────────────────────────────────────────────
 
 func (h *Handler) ListProdi(c fiber.Ctx) error {
 	data, err := h.svc.ListProdi(c.Context())
