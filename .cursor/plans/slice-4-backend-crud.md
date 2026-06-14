@@ -1,21 +1,21 @@
 ---
 name: Slice 4 — Backend CRUD + DPA
-overview: Modul admin (master data), mahasiswa (KRS flow + 5 validasi bisnis), dosen (approval DPA), JWT RBAC, cache di service.
+overview: Feature admin (master data), mahasiswa (KRS flow + 5 validasi bisnis), dosen (approval DPA), JWT RBAC, cache di service.
 todos:
   - id: plan-mode
     content: Plan Mode dijalankan & plan tersimpan
     status: done
   - id: module-admin
-    content: Modul admin handler/service/repository/routes (CRUD MK, Kelas, Dosen, Mahasiswa, DPA)
+    content: Feature admin controller/service/repository/routes (CRUD MK, Kelas, Dosen, Mahasiswa, DPA)
     status: done
   - id: module-mahasiswa-krs
-    content: Modul mahasiswa KRS flow (add-class, remove-class, submit, history) + 5 validasi bisnis
+    content: Feature mahasiswa KRS flow (add-class, remove-class, submit, history) + 5 validasi bisnis
     status: done
   - id: module-dosen-approval
-    content: Modul dosen approval (pending DPA, approve, reject) + otorisasi DPA
+    content: Feature dosen approval (pending DPA, approve, reject) + otorisasi DPA
     status: done
   - id: auth-roles
-    content: ADMIN / MAHASISWA / DOSEN / STAFF RBAC via RequireRole
+    content: ADMIN / MAHASISWA / DOSEN / STAFF RBAC via requireRole middleware
     status: done
   - id: cache-integration
     content: Cache invalidation di setiap service layer
@@ -24,7 +24,7 @@ todos:
     content: Seed user accounts (password123) + link user_id ke dosen & mahasiswa
     status: done
   - id: build-ok
-    content: go build ./... sukses tanpa error
+    content: npm run build backend sukses tanpa error
     status: done
 ---
 
@@ -56,6 +56,6 @@ Buatkan plan untuk API backend Sistem KRS beserta validasinya.
 
 ## File target
 
-- `backend/internal/modules/dosen/`
-- `backend/internal/modules/mahasiswa/`
-- `backend/internal/router/router.go`
+- `backend/src/features/dosen/`
+- `backend/src/features/mahasiswa/`
+- `backend/src/routes/index.ts`

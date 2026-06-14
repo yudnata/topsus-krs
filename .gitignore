@@ -7,9 +7,8 @@ frontend/.env
 # Dependencies & build
 node_modules/
 frontend/dist/
-backend/main
-backend/main.exe
-api-binary
+backend/dist/
+backend/build/
 
 # OS & IDE
 .DS_Store

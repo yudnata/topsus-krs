@@ -1,6 +1,6 @@
 ---
 name: Slice 2 — Database
-overview: Skema 11 tabel KRS, migrasi SQL, seed, update Migrate().
+overview: Skema 11 tabel KRS, migrasi SQL, seed, update migrate().
 todos:
   - id: plan-mode
     content: Plan Mode dijalankan & plan tersimpan
@@ -9,7 +9,7 @@ todos:
     content: migrations/ SQL 11 tabel lengkap
     status: completed
   - id: update-migrate
-    content: Migrate() baca file SQL berurutan
+    content: migrate() baca file SQL berurutan
     status: completed
   - id: seed-dosen
     content: Seed minimal master + jadwal
@@ -34,6 +34,6 @@ todos:
 ## Checklist
 
 - [x] migrations/ SQL 11 tabel lengkap
-- [x] Migrate() mengeksekusi file SQL
+- [x] migrate() mengeksekusi file SQL
 - [x] Seed master data berjalan
 - [x] Query FK KRS dan Jadwal Kelas valid

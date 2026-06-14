@@ -1,88 +1,50 @@
-# Backend API (Go Fiber v3)
+# Backend API (Express.js)
 
-A high-performance backend API built with Go Fiber v3 using a **Modular Feature-First** architecture.
+REST API untuk Sistem KRS dengan arsitektur **feature-based** (`controller` → `service` → `repository`).
 
-## Folder Structure
+## Struktur
+
+```text
+backend/
+├── src/
+│   ├── features/
+│   │   ├── auth/
+│   │   ├── admin/
+│   │   ├── mahasiswa/
+│   │   ├── dosen/
+│   │   └── cachemeta/
+│   ├── shared/
+│   │   ├── cache/
+│   │   ├── database/
+│   │   └── utils/
+│   ├── config/
+│   ├── routes/
+│   ├── app.ts
+│   └── index.ts
+├── migrations/
+└── package.json
+```
+
+## Menjalankan lokal
 
 ```bash
-backend/
-├── cmd/
-│   └── main.go                  # Main entry point
-├── internal/
-│   ├── config/                  # App configuration & env loader
-│   ├── cache/                   # Redis client, keys, invalidator
-│   ├── database/                # DB Connection & Auto-migrations
-│   ├── modules/                 # Feature-based modules (Domains)
-│   │   ├── auth/                # Auth: handler → service → repository
-│   │   │   ├── handler.go
-│   │   │   ├── service.go
-│   │   │   ├── repository.go
-│   │   │   ├── routes.go
-│   │   │   ├── middleware.go    # JWT guard (per modul, bukan folder global)
-│   │   │   └── types.go
-│   │   └── (slice 4+) admin/, mahasiswa/, pengajuan_krs/, ...
-│   └── router/                  # Central router orchestration
-├── pkg/                         # Shared utilities
-│   ├── response/                # JSON response helper
-│   └── validator/               # Input validation helper
-├── .env                         # Local configuration
-└── Dockerfile                   # Multi-stage build definition
+cp .env.example .env
+npm install
+npm run dev
 ```
 
-## Architectural Workflow
+Health check: `GET http://localhost:8080/api/health`
 
-This project follows a **Feature-First / Vertical Slice Architecture**:
-Each feature is self-contained within its own folder under `internal/modules/`.
+## Build production
 
-Data flow:
-`HTTP Request` → `feature/handler` → `feature/service` → `feature/repository` → `PostgreSQL`
-
-- **model/types**: Defines domain entities and feature-specific DTOs.
-- **handler**: Manages input (parsing JSON/params) and output (status codes, standard responses).
-- **service**: Contains core business logic (validation, computation, repository coordination).
-- **repository**: Pure database operations using Raw SQL with `pgx`.
-
-## Routing & Integration
-
-Every feature has a `routes.go` file to define its internal endpoints. These modules are then registered in `internal/router/router.go`:
-
-```go
-// internal/modules/auth/routes.go
-func RegisterRoutes(router fiber.Router, h *Handler, svc *Service) {
-    g := router.Group("/auth")
-    g.Post("/login", h.Login)
-    g.Get("/profile", RequireAuth(svc), h.Profile)
-}
-
-// internal/router/router.go — hanya orchestration, tanpa business logic
-func Setup(app *fiber.App, authH *auth.Handler, authSvc *auth.Service) {
-    api := app.Group("/api")
-    auth.RegisterRoutes(api, authH, authSvc)
-}
+```bash
+npm run build
+npm start
 ```
 
-## Local Setup
+## Endpoint utama
 
-1. Copy `.env.example` to `.env` and configure your credentials.
-2. Install dependencies:
-   ```bash
-   go mod tidy
-   ```
-3. Run the development server:
-   ```bash
-   go run cmd/main.go
-   ```
-
-## API Endpoints
-
-- **Auth**
-  - `POST /api/auth/register` - Create user (role: ADMIN|MAHASISWA|DOSEN|STAFF)
-  - `POST /api/auth/login` - JWT + user profile
-  - `GET /api/auth/profile` - Profil user (Bearer token)
-- **Health**
-  - `GET /api/health` - Status API + Redis
-- **Cache (uji / dev)**
-  - `GET /api/cache/status` - Redis ping
-  - `GET /api/cache/demo?key=` - Uji hit/miss (`X-Cache` header)
-  - `POST /api/cache/demo?key=&value=` - Set cache TTL 120s
-  - `DELETE /api/cache/demo?key=` - Invalidate key
+- `POST /api/auth/login` — JWT + profil user
+- `GET /api/admin/*` — master data (ADMIN)
+- `GET|POST /api/krs/*` — alur KRS mahasiswa
+- `GET|POST /api/approval/*` — persetujuan dosen/staff

@@ -1,25 +1,27 @@
-FROM golang:1.25-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
-RUN go mod download
+COPY package.json package-lock.json* ./
+RUN npm ci
 
-COPY . .
-
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o main ./cmd/main.go
-
-# SQL migrations (dibaca saat startup)
+COPY tsconfig.json ./
+COPY src ./src
 COPY migrations ./migrations
 
-# --- Production image ---
-FROM alpine:latest
+RUN npm run build
 
-RUN apk --no-cache add ca-certificates
+# --- Production image ---
+FROM node:20-alpine
 
 WORKDIR /app
-COPY --from=builder /app/main .
+
+COPY package.json package-lock.json* ./
+RUN npm ci --omit=dev
+
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/migrations ./migrations
 
 EXPOSE 8080
 
-CMD ["./main"]
+CMD ["node", "dist/index.js"]
