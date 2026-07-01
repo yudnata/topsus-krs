@@ -6,7 +6,7 @@ todos:
     content: Dokumentasi ARSITEKTUR, CHECKPOINT, CONTEXT, PROMPT_LOG, DEPLOY
     status: completed
   - id: slice-1-setup
-    content: Setup Vue + Express + docker-compose + perbaiki Dockerfile/config
+    content: Setup Vue + Express + koneksi Cloud Database + config
     status: pending
   - id: slice-2-database
     content: Skema 11 Tabel Master Data & KRS + migrasi + seed
@@ -37,7 +37,7 @@ Aplikasi CRUD **Mahasiswa** dan **Dosen** dengan relasi **Dosen Pembimbing Akade
 ## Stack
 
 - Frontend: Vue 3 + Vite + TypeScript → **Vercel**
-- Backend: Express.js → **Azure App Service** (atau Container Apps)
+- Backend: Express.js → **Azure App Service**
 - DB: PostgreSQL (Neon) | Cache: Redis (Azure Cache atau Upstash)
 
 ## Urutan slice

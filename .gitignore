@@ -1,4 +1,4 @@
-# Environment (jangan upload ke GitHub — laporan §2.23)
+# Environment
 .env
 .env.local
 backend/.env

@@ -49,17 +49,28 @@ onMounted(load)
         <p class="page-sub">Tambah & lihat daftar dosen</p>
       </div>
       <button class="btn btn-primary" @click="showForm = !showForm">
-        {{ showForm ? '✕ Batal' : '+ Tambah Dosen' }}
+        {{ showForm ? 'Batal' : 'Tambah Dosen' }}
       </button>
     </div>
 
-    <div v-if="error" class="alert alert-error fade-in" style="margin-bottom:1rem;">{{ error }}</div>
-    <div v-if="success" class="alert alert-success fade-in" style="margin-bottom:1rem;">{{ success }}</div>
+    <!-- Alerts -->
+    <div v-if="error" class="alert alert-error fade-in" style="margin-bottom:1.5rem;">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/>
+      </svg>
+      <span>{{ error }}</span>
+    </div>
+    <div v-if="success" class="alert alert-success fade-in" style="margin-bottom:1.5rem;">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+      </svg>
+      <span>{{ success }}</span>
+    </div>
 
     <!-- Form -->
-    <div v-if="showForm" class="card fade-in" style="margin-bottom:1.5rem;">
-      <h2 class="card-title" style="margin-bottom:1.25rem;">Tambah Dosen Baru</h2>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+    <div v-if="showForm" class="card fade-in" style="margin-bottom:2rem;">
+      <h2 class="card-title" style="margin-bottom:1.5rem;">Tambah Dosen Baru</h2>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:1.25rem;">
         <div class="form-field">
           <label class="form-label">NIP</label>
           <input v-model="form.nip" class="form-input" placeholder="19800101001" />
@@ -74,13 +85,13 @@ onMounted(load)
         </div>
         <div class="form-field">
           <label class="form-label">Password</label>
-          <input v-model="form.password" class="form-input" type="password" />
+          <input v-model="form.password" class="form-input" type="password" placeholder="••••••••" />
         </div>
       </div>
-      <div style="margin-top:1.25rem;display:flex;gap:0.75rem;">
+      <div style="margin-top:1.5rem; display:flex; gap:0.75rem;">
         <button class="btn btn-primary" :disabled="formLoading" @click="handleCreate">
-          <span v-if="formLoading" class="spinner" style="width:15px;height:15px;"></span>
-          {{ formLoading ? 'Menyimpan…' : 'Simpan Dosen' }}
+          <span v-if="formLoading" class="spinner" style="margin-right:0.5rem;"></span>
+          Simpan Dosen
         </button>
         <button class="btn btn-ghost" @click="showForm = false">Batal</button>
       </div>
@@ -88,7 +99,7 @@ onMounted(load)
 
     <!-- Table -->
     <div class="card fade-in">
-      <div v-if="loading" style="display:flex;align-items:center;gap:0.75rem;padding:2rem;color:var(--color-muted);">
+      <div v-if="loading" style="display:flex; align-items:center; gap:0.75rem; padding:2rem; color:var(--color-text-muted); font-weight: 500;">
         <span class="spinner"></span> Memuat…
       </div>
       <div v-else class="table-wrap">
@@ -98,9 +109,9 @@ onMounted(load)
           </thead>
           <tbody>
             <tr v-for="d in dosenList" :key="d.id" class="fade-in">
-              <td style="font-family:monospace;font-size:0.85rem;">{{ d.nip }}</td>
-              <td style="font-weight:500;">{{ d.nama }}</td>
-              <td style="color:var(--color-muted);">{{ d.email }}</td>
+              <td style="font-family:var(--font-mono); font-size:0.8125rem;">{{ d.nip }}</td>
+              <td style="font-weight:700; color: var(--color-text);">{{ d.nama }}</td>
+              <td style="color:var(--color-text-muted); font-weight: 500;">{{ d.email }}</td>
             </tr>
           </tbody>
         </table>

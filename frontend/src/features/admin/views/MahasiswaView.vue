@@ -82,17 +82,28 @@ onMounted(load)
         <p class="page-sub">Daftar mahasiswa & pemetaan DPA</p>
       </div>
       <button class="btn btn-primary" @click="showForm = !showForm">
-        {{ showForm ? '✕ Batal' : '+ Tambah Mahasiswa' }}
+        {{ showForm ? 'Batal' : 'Tambah Mahasiswa' }}
       </button>
     </div>
 
-    <div v-if="error" class="alert alert-error fade-in" style="margin-bottom:1rem;">{{ error }}</div>
-    <div v-if="success" class="alert alert-success fade-in" style="margin-bottom:1rem;">{{ success }}</div>
+    <!-- Alerts -->
+    <div v-if="error" class="alert alert-error fade-in" style="margin-bottom:1.5rem;">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/>
+      </svg>
+      <span>{{ error }}</span>
+    </div>
+    <div v-if="success" class="alert alert-success fade-in" style="margin-bottom:1.5rem;">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+      </svg>
+      <span>{{ success }}</span>
+    </div>
 
     <!-- Form tambah -->
-    <div v-if="showForm" class="card fade-in" style="margin-bottom:1.5rem;">
-      <h2 class="card-title" style="margin-bottom:1.25rem;">Tambah Mahasiswa Baru</h2>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+    <div v-if="showForm" class="card fade-in" style="margin-bottom:2rem;">
+      <h2 class="card-title" style="margin-bottom:1.5rem;">Tambah Mahasiswa Baru</h2>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:1.25rem;">
         <div class="form-field">
           <label class="form-label">NIM</label>
           <input v-model="form.nim" class="form-input" placeholder="2201001" />
@@ -107,7 +118,7 @@ onMounted(load)
         </div>
         <div class="form-field">
           <label class="form-label">Password</label>
-          <input v-model="form.password" class="form-input" type="password" placeholder="Password login" />
+          <input v-model="form.password" class="form-input" type="password" placeholder="••••••••" />
         </div>
         <div class="form-field">
           <label class="form-label">Program Studi</label>
@@ -124,10 +135,10 @@ onMounted(load)
           </select>
         </div>
       </div>
-      <div style="margin-top:1.25rem;display:flex;gap:0.75rem;">
+      <div style="margin-top:1.5rem; display:flex; gap:0.75rem;">
         <button class="btn btn-primary" :disabled="formLoading" @click="handleCreate">
-          <span v-if="formLoading" class="spinner" style="width:15px;height:15px;"></span>
-          {{ formLoading ? 'Menyimpan…' : 'Simpan Mahasiswa' }}
+          <span v-if="formLoading" class="spinner" style="margin-right:0.5rem;"></span>
+          Simpan Mahasiswa
         </button>
         <button class="btn btn-ghost" @click="showForm = false">Batal</button>
       </div>
@@ -135,25 +146,25 @@ onMounted(load)
 
     <!-- Table -->
     <div class="card fade-in">
-      <div v-if="loading" style="display:flex;align-items:center;gap:0.75rem;padding:2rem;color:var(--color-muted);">
+      <div v-if="loading" style="display:flex; align-items:center; gap:0.75rem; padding:2rem; color:var(--color-text-muted); font-weight: 500;">
         <span class="spinner"></span> Memuat…
       </div>
       <div v-else class="table-wrap">
         <table class="table">
           <thead>
-            <tr><th>NIM</th><th>Nama</th><th>Prodi</th><th>DPA</th><th>Max SKS</th><th>Aksi</th></tr>
+            <tr><th>NIM</th><th>Nama</th><th>Prodi</th><th>DPA</th><th>Max SKS</th><th></th></tr>
           </thead>
           <tbody>
             <tr v-for="m in mahasiswaList" :key="m.id" class="fade-in">
-              <td style="font-family:monospace;font-size:0.85rem;">{{ m.nim }}</td>
-              <td style="font-weight:500;">{{ m.nama }}</td>
-              <td style="color:var(--color-muted);">{{ m.nama_prodi }}</td>
+              <td style="font-family:var(--font-mono); font-size:0.8125rem;">{{ m.nim }}</td>
+              <td style="font-weight:700; color: var(--color-text);">{{ m.nama }}</td>
+              <td style="color:var(--color-text-muted); font-weight:500;">{{ m.nama_prodi }}</td>
               <td>
-                <span v-if="m.nama_dosen" style="font-size:0.85rem;">{{ m.nama_dosen }}</span>
-                <span v-else style="color:var(--color-danger);font-size:0.8rem;">Belum dipetakan</span>
+                <span v-if="m.nama_dosen" style="font-weight: 500;">{{ m.nama_dosen }}</span>
+                <span v-else style="color:var(--color-danger); font-size:0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em;">Belum dipetakan</span>
               </td>
-              <td style="text-align:center;">{{ m.max_sks }}</td>
-              <td>
+              <td style="font-family:var(--font-mono); font-weight: 700;">{{ m.max_sks }}</td>
+              <td style="text-align: right;">
                 <button class="btn btn-ghost btn-sm" @click="openDPA(m)">Set DPA</button>
               </td>
             </tr>
@@ -165,22 +176,22 @@ onMounted(load)
     <!-- DPA Modal -->
     <div v-if="dpaModal" class="modal-backdrop" @click.self="dpaModal = false">
       <div class="modal-box">
-        <h3 class="modal-title">📌 Set Dosen Pembimbing (DPA)</h3>
-        <p style="font-size:0.875rem;color:var(--color-muted);margin-bottom:1.25rem;">
+        <h3 class="modal-title">Set Dosen Pembimbing (DPA)</h3>
+        <p style="font-size:0.875rem; color:var(--color-text-muted); margin-bottom:1.5rem; margin-top: -0.5rem;">
           Mahasiswa: <strong style="color:var(--color-text);">{{ dpaTarget?.nama }}</strong>
         </p>
-        <div class="form-field" style="margin-bottom:1.25rem;">
+        <div class="form-field" style="margin-bottom:1.5rem;">
           <label class="form-label">Dosen Pembimbing Akademik</label>
           <select v-model="dpaDosenId" class="form-input">
             <option value="">— Pilih Dosen —</option>
             <option v-for="d in dosenList" :key="d.id" :value="d.id">{{ d.nama }}</option>
           </select>
         </div>
-        <div style="display:flex;gap:0.75rem;justify-content:flex-end;">
+        <div style="display:flex; gap:0.75rem; justify-content:flex-end;">
           <button class="btn btn-ghost" @click="dpaModal = false">Batal</button>
           <button class="btn btn-primary" :disabled="dpaLoading || !dpaDosenId" @click="saveDPA">
-            <span v-if="dpaLoading" class="spinner" style="width:14px;height:14px;"></span>
-            {{ dpaLoading ? 'Menyimpan…' : 'Simpan DPA' }}
+            <span v-if="dpaLoading" class="spinner" style="margin-right:0.5rem;"></span>
+            Simpan DPA
           </button>
         </div>
       </div>
